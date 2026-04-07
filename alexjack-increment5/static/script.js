@@ -101,12 +101,44 @@ if (typeof jQuery !== 'undefined') {
 // ===== Part 6: Buy Tickets — Reveal Purchase Form =====
 
 function showPurchaseForm(date) {
-    document.getElementById("purchaseForm").style.display = "block";
+    var form = document.getElementById("purchaseForm");
+    var confirmation = document.getElementById("confirmation");
+    if (!form) return;
+    form.style.display = "block";
+    if (confirmation) confirmation.style.display = "none";
     var dateField = document.getElementById("selectedDate");
-    if (dateField) {
-        dateField.value = date;
+    if (dateField) dateField.value = date;
+    updateTotal();
+    form.scrollIntoView({ behavior: "smooth" });
+}
+
+function updateTotal() {
+    var price = parseInt(document.getElementById("ticketType").value) || 18;
+    var qty = parseInt(document.getElementById("quantity").value) || 1;
+    var totalEl = document.getElementById("totalPrice");
+    if (totalEl) totalEl.textContent = "Total: $" + (price * qty);
+}
+
+function submitPurchase() {
+    var form = document.getElementById("ticketForm");
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
     }
-    document.getElementById("purchaseForm").scrollIntoView({ behavior: "smooth" });
+    var name = document.getElementById("name").value;
+    var qty = document.getElementById("quantity").value;
+    var date = document.getElementById("selectedDate").value;
+    var price = parseInt(document.getElementById("ticketType").value);
+    var total = price * parseInt(qty);
+    var typeLabel = document.getElementById("ticketType").selectedOptions[0].text;
+
+    document.getElementById("purchaseForm").style.display = "none";
+    var conf = document.getElementById("confirmation");
+    conf.style.display = "block";
+    document.getElementById("confirmationMsg").textContent =
+        "Thank you, " + name + "! Your " + qty + " " + typeLabel.split("—")[0].trim() +
+        " ticket(s) for " + date + " are booked. Total charged: $" + total + ".";
+    conf.scrollIntoView({ behavior: "smooth" });
 }
 
 

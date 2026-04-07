@@ -137,21 +137,43 @@
 
             <div id="purchaseForm">
                 <h2>Purchase Tickets</h2>
-                <form>
-                    <label for="name">Name: (required)</label><br>
-                    <input type="text" id="name" name="name" required><br><br>
+                <form id="ticketForm">
+                    <label for="name">Name: (required)</label>
+                    <input type="text" id="name" name="name" required>
 
-                    <label for="email">Email: (required)</label><br>
-                    <input type="email" id="email" name="email" required><br><br>
+                    <label for="email">Email: (required)</label>
+                    <input type="email" id="email" name="email" required>
 
-                    <label for="quantity">Number of Tickets: (required)</label><br>
-                    <input type="number" id="quantity" name="quantity" min="1" required><br><br>
+                    <label for="zip">ZIP Code: (required)</label>
+                    <input type="text" id="zip" name="zip" pattern="[0-9]{5}" maxlength="5" placeholder="e.g. 15213" required>
 
-                    <label for="selectedDate">Selected Date:</label><br>
-                    <input type="text" id="selectedDate" name="selectedDate" readonly><br><br>
+                    <label for="ticketType">Ticket Type:</label>
+                    <select id="ticketType" name="ticketType" onchange="updateTotal()">
+                        <option value="18">General — $18</option>
+                        <option value="10">Student — $10</option>
+                        <option value="15">Member — $15</option>
+                    </select>
 
-                    <button type="button" onclick="alert('Redirecting to payment system.')">Submit</button>
+                    <label for="quantity">Number of Tickets: (required)</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="1" oninput="updateTotal()" required>
+
+                    <label for="selectedDate">Selected Date:</label>
+                    <input type="text" id="selectedDate" name="selectedDate" readonly>
+
+                    <p id="totalPrice" class="total-price">Total: $18</p>
+
+                    <div class="mailing-row">
+                        <input type="checkbox" id="mailingList" name="mailingList">
+                        <label for="mailingList">Add me to the MonoMuse mailing list</label>
+                    </div>
+
+                    <button type="button" onclick="submitPurchase()">Confirm Purchase</button>
                 </form>
+            </div>
+
+            <div id="confirmation" class="confirmation-box">
+                <h2>Booking Confirmed!</h2>
+                <p id="confirmationMsg"></p>
             </div>
         </main>
 
